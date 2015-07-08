@@ -5,10 +5,10 @@ ODIR = ./obj
 CC = gcc
 CFLAGS = -Wall -g -I$(IDIR)
 
-_DEPS = sudoku.h
+_DEPS = Sudoku.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = sudoku.o main.o
+_OBJ = Sudoku.o main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
