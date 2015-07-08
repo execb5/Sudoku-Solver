@@ -18,7 +18,7 @@ main: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 testLeak: main
-	valgrind --leak-check=full -v ./main
+	valgrind --leak-check=full -v ./$^
 
 .PHONY: clean
 
