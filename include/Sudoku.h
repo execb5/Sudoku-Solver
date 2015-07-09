@@ -1,4 +1,5 @@
 #define SUDOKU_SIZE 9
+#define LINE_SIZE 128
 
 typedef enum {false, true} bool;
 
@@ -20,5 +21,5 @@ bool isBoardCorrect(Sudoku* su);
 bool isColumnCorrect(Sudoku* su, int line);
 bool isLineCorrect(Sudoku* su, int line);
 void printBoard(Sudoku* su);
-void readSudokuFromFile(char* fileName, Sudoku* su);
+Sudoku* readSudokuFromFile(const char* fileName);
 void solve(Sudoku* su);

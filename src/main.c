@@ -3,48 +3,12 @@
 #include <string.h>
 #include <Sudoku.h>
 
-#define LINE_SIZE 128
-
 int
 main(int argc, const char* argv[])
 {
         static const char filename[] = "schema";
-        FILE* file = fopen ( filename, "r" );
-        Sudoku read;
-        if (file != NULL)
-        {
-                char line[LINE_SIZE];
-                int i = 0;
-                int j = 0;
-                while (fgets(line, sizeof line, file) != NULL) //read a line
-                {
-                        size_t ln = strlen(line) - 1;
-                        if (line[ln] == '\n')
-                        {
-                                line[ln] = '\0'; //removes the trailing newline
-                        }
-                        
-                        char* ch = strtok(line, "\\  ");
-                        j = 0;
-                        while (ch != NULL)
-                        {
-                                printf("%s ", ch);
-                                read.board[i][j] = strtol(ch, NULL, 10);
-                                ch = strtok( NULL, "\\ " );
-                                j++;
-                        }
-                        printf ("\n");
-                        i++;
-                }
-                fclose(file);
-        }
-        else
-        {
-                perror(filename); //why didn't the file open?
-        }
 
-        printf("Read\n");
-        printBoard(&read);
+        Sudoku* read = readSudokuFromFile(filename);
 
         Sudoku test = { { { 0, 5, 0, 0, 6, 0, 0, 0, 1 }
                         , { 0, 0, 4, 8, 0, 0, 0, 7, 0 }
@@ -58,6 +22,8 @@ main(int argc, const char* argv[])
 
         Sudoku* copy = copyBoard(&test);
 
+        printf("Read\n");
+        printBoard(read);
         printf("\n------------------------------------\n");
         printf("test\n");
         printBoard(&test);
@@ -65,6 +31,7 @@ main(int argc, const char* argv[])
         printf("copy\n");
         printBoard(copy);
 
+        free(read);
         free(copy);
 
         return 0;

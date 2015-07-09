@@ -107,10 +107,43 @@ printBoard(Sudoku* su)
         }
 }
 
-void
-readSudokuFromFile(char* fileName, Sudoku* su)
+Sudoku*
+readSudokuFromFile(const char* fileName)
 {
-
+        FILE* file = fopen ( fileName, "r" );
+        Sudoku* read = (Sudoku*) malloc(sizeof(Sudoku));
+        if (file != NULL)
+        {
+                char line[LINE_SIZE];
+                int i = 0;
+                int j = 0;
+                while (fgets(line, sizeof line, file) != NULL) //read a line
+                {
+                        size_t ln = strlen(line) - 1;
+                        if (line[ln] == '\n')
+                        {
+                                line[ln] = '\0'; //removes the trailing newline
+                        }
+                        
+                        char* ch = strtok(line, "\\  ");
+                        j = 0;
+                        while (ch != NULL)
+                        {
+                                printf("%s ", ch);
+                                read->board[i][j] = strtol(ch, NULL, 10);
+                                ch = strtok( NULL, "\\ " );
+                                j++;
+                        }
+                        printf ("\n");
+                        i++;
+                }
+                fclose(file);
+        }
+        else
+        {
+                perror(fileName); //why didn't the file open?
+        }
+        return read;
 }
 
 void
