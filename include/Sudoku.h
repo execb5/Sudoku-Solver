@@ -6,6 +6,7 @@ typedef struct {
         int board[SUDOKU_SIZE][SUDOKU_SIZE];
 } Sudoku;
 
+Sudoku* copyBoard(Sudoku* su);
 bool is1stQOk(Sudoku* su);
 bool is2ndQOk(Sudoku* su);
 bool is3rdQOk(Sudoku* su);
@@ -18,6 +19,6 @@ bool is9thQOk(Sudoku* su);
 bool isBoardCorrect(Sudoku* su);
 bool isColumnCorrect(Sudoku* su, int line);
 bool isLineCorrect(Sudoku* su, int line);
+void printBoard(Sudoku* su);
 void readSudokuFromFile(char* fileName, Sudoku* su);
 void solve(Sudoku* su);
-void printBoard(Sudoku* su);

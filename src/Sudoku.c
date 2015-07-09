@@ -1,4 +1,15 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <Sudoku.h>
+
+Sudoku*
+copyBoard(Sudoku* su)
+{
+        Sudoku* cp = (Sudoku*) malloc(sizeof(Sudoku));
+        memcpy(cp->board, su->board, SUDOKU_SIZE * SUDOKU_SIZE * sizeof(int));
+        return cp;
+}
 
 bool
 is1stQOk(Sudoku* su)
@@ -73,6 +84,21 @@ isLineCorrect(Sudoku* su, int line)
 }
 
 void
+printBoard(Sudoku* su)
+{
+        int i;
+        int j;
+        for (i = 0; i < SUDOKU_SIZE; i++)
+        {
+                for (j = 0; j < SUDOKU_SIZE; j++)
+                {
+                        printf("%d ", su->board[i][j]);
+                }
+                printf("\n");
+        }
+}
+
+void
 readSudokuFromFile(char* fileName, Sudoku* su)
 {
 
@@ -80,12 +106,6 @@ readSudokuFromFile(char* fileName, Sudoku* su)
 
 void
 solve(Sudoku* su)
-{
-
-}
-
-void
-printBoard(Sudoku* su)
 {
 
 }
