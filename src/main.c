@@ -46,6 +46,8 @@ main(int argc, const char* argv[])
 
         printf("correct 1stQOk? %d\n", is1stQOk(&correct));
         printf("test 1stQOk? %d\n", is1stQOk(&test));
+        printf("correct 2ndQOk? %d\n", is2ndQOk(&correct));
+        printf("test 2ndQOk? %d\n", is2ndQOk(&test));
 
         free(read);
         free(copy);

@@ -59,6 +59,24 @@ is1stQOk(Sudoku* su)
 bool
 is2ndQOk(Sudoku* su)
 {
+        int i;
+        int j;
+        for (i = 3; i < SECOND_SECTION; i++)
+        {
+                for (j = 0; j < FIRST_SECTION; j++)
+                {
+                        if (su->board[i][j] == 0)
+                        {
+                                return false;
+                        }
+                        checker[su->board[i][j] - 1]++;
+                }
+        }
+        if (checkChecker())
+        {
+                resetChecker();
+                return true;;
+        }
         return false;
 }
 
