@@ -52,6 +52,8 @@ main(int argc, const char* argv[])
         printf("test 3rdQOk? %d\n", is3rdQOk(&test));
         printf("correct 4thQOk? %d\n", is4thQOk(&correct));
         printf("test 4thQOk? %d\n", is4thQOk(&test));
+        printf("correct 5thQOk? %d\n", is5thQOk(&correct));
+        printf("test 5thQOk? %d\n", is5thQOk(&test));
 
         free(read);
         free(copy);

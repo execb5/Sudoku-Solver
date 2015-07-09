@@ -43,6 +43,7 @@ is1stQOk(Sudoku* su)
                 {
                         if (su->board[i][j] == 0)
                         {
+                                resetChecker();
                                 return false;
                         }
                         checker[su->board[i][j] - 1]++;
@@ -53,6 +54,7 @@ is1stQOk(Sudoku* su)
                 resetChecker();
                 return true;;
         }
+        resetChecker();
         return false;
 }
 
@@ -67,6 +69,7 @@ is2ndQOk(Sudoku* su)
                 {
                         if (su->board[i][j] == 0)
                         {
+                                resetChecker();
                                 return false;
                         }
                         checker[su->board[i][j] - 1]++;
@@ -77,6 +80,7 @@ is2ndQOk(Sudoku* su)
                 resetChecker();
                 return true;;
         }
+        resetChecker();
         return false;
 }
 
@@ -91,6 +95,7 @@ is3rdQOk(Sudoku* su)
                 {
                         if (su->board[i][j] == 0)
                         {
+                                resetChecker();
                                 return false;
                         }
                         checker[su->board[i][j] - 1]++;
@@ -101,6 +106,7 @@ is3rdQOk(Sudoku* su)
                 resetChecker();
                 return true;;
         }
+        resetChecker();
         return false;
 }
 
@@ -115,6 +121,7 @@ is4thQOk(Sudoku* su)
                 {
                         if (su->board[i][j] == 0)
                         {
+                                resetChecker();
                                 return false;
                         }
                         checker[su->board[i][j] - 1]++;
@@ -125,12 +132,33 @@ is4thQOk(Sudoku* su)
                 resetChecker();
                 return true;;
         }
+        resetChecker();
         return false;
 }
 
 bool
 is5thQOk(Sudoku* su)
 {
+        int i;
+        int j;
+        for (i = 3; i < SECOND_SECTION; i++)
+        {
+                for (j = 3; j < SECOND_SECTION; j++)
+                {
+                        if (su->board[i][j] == 0)
+                        {
+                                resetChecker();
+                                return false;
+                        }
+                        checker[su->board[i][j] - 1]++;
+                }
+        }
+        if (checkChecker())
+        {
+                resetChecker();
+                return true;;
+        }
+        resetChecker();
         return false;
 }
 
