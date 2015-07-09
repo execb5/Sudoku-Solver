@@ -7,6 +7,11 @@ Sudoku*
 copyBoard(Sudoku* su)
 {
         Sudoku* cp = (Sudoku*) malloc(sizeof(Sudoku));
+        if (cp == NULL)
+        {
+                printf("Failed to allocate memory for a copy.\n");
+                exit(EXIT_FAILURE);
+        }
         memcpy(cp->board, su->board, SUDOKU_SIZE * SUDOKU_SIZE * sizeof(int));
         return cp;
 }
@@ -110,8 +115,14 @@ printBoard(Sudoku* su)
 Sudoku*
 readSudokuFromFile(const char* fileName)
 {
-        FILE* file = fopen ( fileName, "r" );
         Sudoku* read = (Sudoku*) malloc(sizeof(Sudoku));
+        if (read == NULL)
+        {
+                printf("Failed to allocate memory before reading a File.\n");
+                exit(EXIT_FAILURE);
+        }
+
+        FILE* file = fopen ( fileName, "r" );
         if (file != NULL)
         {
                 char line[LINE_SIZE];
