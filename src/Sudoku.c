@@ -191,6 +191,26 @@ is6thQOk(Sudoku* su)
 bool
 is7thQOk(Sudoku* su)
 {
+        int i;
+        int j;
+        for (i = 6; i < SUDOKU_SIZE; i++)
+        {
+                for (j = 0; j < FIRST_SECTION; j++)
+                {
+                        if (su->board[i][j] == 0)
+                        {
+                                resetChecker();
+                                return false;
+                        }
+                        checker[su->board[i][j] - 1]++;
+                }
+        }
+        if (checkChecker())
+        {
+                resetChecker();
+                return true;;
+        }
+        resetChecker();
         return false;
 }
 
