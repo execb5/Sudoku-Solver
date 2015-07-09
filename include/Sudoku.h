@@ -29,3 +29,4 @@ void printBoard(Sudoku* su);
 Sudoku* readSudokuFromFile(const char* fileName);
 void resetChecker(void);
 void solve(Sudoku* su);
+void solveAux(Sudoku* su, int i, int j);

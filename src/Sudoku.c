@@ -413,6 +413,11 @@ resetChecker(void)
 void
 solve(Sudoku* su)
 {
-
+        solveAux(su, 0, 0);
 }
 
+void
+solveAux(Sudoku* su, int i, int j)
+{
+
+}
