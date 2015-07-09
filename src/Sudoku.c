@@ -269,7 +269,22 @@ is9thQOk(Sudoku* su)
 bool
 isBoardCorrect(Sudoku* su)
 {
-        return false;
+        bool solved = true;
+        solved = solved && is1stQOk(su);
+        solved = solved && is2ndQOk(su);
+        solved = solved && is3rdQOk(su);
+        solved = solved && is4thQOk(su);
+        solved = solved && is5thQOk(su);
+        solved = solved && is6thQOk(su);
+        solved = solved && is7thQOk(su);
+        solved = solved && is8thQOk(su);
+        solved = solved && is9thQOk(su);
+        int i;
+        for (i = 0; i < SUDOKU_SIZE; i++) {
+                solved = solved && isColumnCorrect(su, i);
+                solved = solved && isLineCorrect(su, i);
+        }
+        return solved;
 }
 
 bool

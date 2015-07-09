@@ -69,6 +69,9 @@ main(int argc, const char* argv[])
         printf("9th line correct correct? %d\n", isLineCorrect(&correct, 8));
         printf("9th line test correct? %d\n", isLineCorrect(&test, 8));
 
+        printf("Is correct board correct? %d\n", isBoardCorrect(&correct));
+        printf("Is test board correct? %d\n", isBoardCorrect(&test));
+
         free(read);
         free(copy);
 
