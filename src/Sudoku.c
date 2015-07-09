@@ -61,9 +61,9 @@ is2ndQOk(Sudoku* su)
 {
         int i;
         int j;
-        for (i = 3; i < SECOND_SECTION; i++)
+        for (i = 0; i < FIRST_SECTION; i++)
         {
-                for (j = 0; j < FIRST_SECTION; j++)
+                for (j = 3; j < SECOND_SECTION; j++)
                 {
                         if (su->board[i][j] == 0)
                         {
@@ -83,6 +83,24 @@ is2ndQOk(Sudoku* su)
 bool
 is3rdQOk(Sudoku* su)
 {
+        int i;
+        int j;
+        for (i = 0; i < FIRST_SECTION; i++)
+        {
+                for (j = 6; j < SUDOKU_SIZE; j++)
+                {
+                        if (su->board[i][j] == 0)
+                        {
+                                return false;
+                        }
+                        checker[su->board[i][j] - 1]++;
+                }
+        }
+        if (checkChecker())
+        {
+                resetChecker();
+                return true;;
+        }
         return false;
 }
 

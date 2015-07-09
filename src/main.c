@@ -48,6 +48,8 @@ main(int argc, const char* argv[])
         printf("test 1stQOk? %d\n", is1stQOk(&test));
         printf("correct 2ndQOk? %d\n", is2ndQOk(&correct));
         printf("test 2ndQOk? %d\n", is2ndQOk(&test));
+        printf("correct 3rdQOk? %d\n", is3rdQOk(&correct));
+        printf("test 3rdQOk? %d\n", is3rdQOk(&test));
 
         free(read);
         free(copy);
