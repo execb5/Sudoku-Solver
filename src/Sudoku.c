@@ -3,6 +3,22 @@
 #include <string.h>
 #include <Sudoku.h>
 
+int checker[SUDOKU_SIZE] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+bool
+checkChecker(void)
+{
+        int i;
+        for (i = 0; i < SUDOKU_SIZE; i++)
+        {
+                if (checker[i] != 1)
+                {
+                        return false;
+                }
+        }
+        return true;
+}
+
 Sudoku*
 copyBoard(Sudoku* su)
 {
@@ -19,6 +35,24 @@ copyBoard(Sudoku* su)
 bool
 is1stQOk(Sudoku* su)
 {
+        int i;
+        int j;
+        for (i = 0; i < FIRST_SECTION; i++)
+        {
+                for (j = 0; j < FIRST_SECTION; j++)
+                {
+                        if (su->board[i][j] == 0)
+                        {
+                                return false;
+                        }
+                        checker[su->board[i][j] - 1]++;
+                }
+        }
+        if (checkChecker())
+        {
+                resetChecker();
+                return true;;
+        }
         return false;
 }
 
@@ -155,6 +189,16 @@ readSudokuFromFile(const char* fileName)
                 perror(fileName); //why didn't the file open?
         }
         return read;
+}
+
+void
+resetChecker(void)
+{
+        int i;
+        for (i = 0; i < SUDOKU_SIZE; i++)
+        {
+                checker[i] = 0;
+        }
 }
 
 void
