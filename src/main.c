@@ -63,6 +63,9 @@ main(int argc, const char* argv[])
         printf("correct 9thQOk? %d\n", is9thQOk(&correct));
         printf("test 9thQOk? %d\n", is9thQOk(&test));
 
+        printf("9th column correct correct? %d\n", isColumnCorrect(&correct, 8));
+        printf("9th column test correct? %d\n", isColumnCorrect(&test, 8));
+
         free(read);
         free(copy);
 
