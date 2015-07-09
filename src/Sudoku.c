@@ -88,13 +88,22 @@ printBoard(Sudoku* su)
 {
         int i;
         int j;
+        printf(" _____________________________________\n");
         for (i = 0; i < SUDOKU_SIZE; i++)
         {
                 for (j = 0; j < SUDOKU_SIZE; j++)
                 {
-                        printf("%d ", su->board[i][j]);
+                        printf("|_%d_", su->board[i][j]);
+                        if (j == 2 || j == 5)
+                        {
+                                printf("|");
+                        }
                 }
-                printf("\n");
+                printf("|\n");
+                if (i == 2 || i == 5)
+                {
+                        printf("|-----------||-----------||-----------|\n");
+                }
         }
 }
 

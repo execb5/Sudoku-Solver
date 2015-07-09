@@ -48,9 +48,9 @@ main(int argc, const char* argv[])
 
         Sudoku* copy = copyBoard(&test);
 
-        printf("------------------------------------\n");
+        printf("\n------------------------------------\n");
         printBoard(&test);
-        printf("------------------------------------\n");
+        printf("\n------------------------------------\n");
         printBoard(copy);
 
         free(copy);
