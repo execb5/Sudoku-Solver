@@ -23,7 +23,7 @@ bool is7thQOk(Sudoku* su);
 bool is8thQOk(Sudoku* su);
 bool is9thQOk(Sudoku* su);
 bool isBoardCorrect(Sudoku* su);
-bool isColumnCorrect(Sudoku* su, int line);
+bool isColumnCorrect(Sudoku* su, int column);
 bool isLineCorrect(Sudoku* su, int line);
 void printBoard(Sudoku* su);
 Sudoku* readSudokuFromFile(const char* fileName);

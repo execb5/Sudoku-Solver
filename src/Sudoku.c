@@ -273,7 +273,7 @@ isBoardCorrect(Sudoku* su)
 }
 
 bool
-isColumnCorrect(Sudoku* su, int line)
+isColumnCorrect(Sudoku* su, int column)
 {
         return false;
 }
