@@ -66,6 +66,9 @@ main(int argc, const char* argv[])
         printf("9th column correct correct? %d\n", isColumnCorrect(&correct, 8));
         printf("9th column test correct? %d\n", isColumnCorrect(&test, 8));
 
+        printf("9th line correct correct? %d\n", isLineCorrect(&correct, 8));
+        printf("9th line test correct? %d\n", isLineCorrect(&test, 8));
+
         free(read);
         free(copy);
 

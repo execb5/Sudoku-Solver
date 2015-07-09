@@ -297,6 +297,22 @@ isColumnCorrect(Sudoku* su, int column)
 bool
 isLineCorrect(Sudoku* su, int line)
 {
+        int i;
+        for (i = 0; i < SUDOKU_SIZE; i++)
+        {
+                if (su->board[line][i] == 0)
+                {
+                        resetChecker();
+                        return false;
+                }
+                checker[su->board[line][i] - 1]++;
+        }
+        if (checkChecker())
+        {
+                resetChecker();
+                return true;;
+        }
+        resetChecker();
         return false;
 }
 
