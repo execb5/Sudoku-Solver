@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <Sudoku.h>
+#include <sudoku.h>
 
 int
 main(int argc, const char* argv[])
