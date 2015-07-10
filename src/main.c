@@ -30,6 +30,16 @@ main(int argc, const char* argv[])
                            , { 2, 8, 7, 4, 1, 9, 6, 3, 5 }
                            , { 3, 4, 5, 2, 8, 6, 1, 7, 9 } } };
 
+        Sudoku hard = { { { 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+                        , { 0, 0, 0, 0, 0, 3, 0, 8, 5 }
+                        , { 0, 0, 1, 0, 2, 0, 0, 0, 0 }
+                        , { 0, 0, 0, 5, 0, 7, 0, 0, 0 }
+                        , { 0, 0, 4, 0, 0, 0, 1, 0, 0 }
+                        , { 0, 9, 0, 0, 0, 0, 0, 0, 0 }
+                        , { 5, 0, 0, 0, 0, 0, 0, 7, 3 }
+                        , { 0, 0, 2, 0, 1, 0, 0, 0, 0 }
+                        , { 0, 0, 0, 0, 4, 0, 0, 0, 9 } } };
+
         Sudoku* copy = copyBoard(&test);
 
         printf("Read\n");
@@ -76,6 +86,10 @@ main(int argc, const char* argv[])
         printBoard(read);
         solve(copy);
         printBoard(copy);
+        printf("Hard puzzle:\n");
+        printBoard(&hard);
+        solve(&hard);
+        printBoard(&hard);
 
         free(read);
         free(copy);
