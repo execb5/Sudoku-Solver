@@ -11,7 +11,7 @@ checkChecker(void)
         int i;
         for (i = 0; i < SUDOKU_SIZE; i++)
         {
-                if (checker[i] != 1)
+                if (checker[i] > 1)
                 {
                         return false;
                 }
@@ -295,8 +295,7 @@ isColumnCorrect(Sudoku* su, int column)
         {
                 if (su->board[i][column] == 0)
                 {
-                        resetChecker();
-                        return false;
+                        continue;
                 }
                 checker[su->board[i][column] - 1]++;
         }
@@ -317,8 +316,7 @@ isLineCorrect(Sudoku* su, int line)
         {
                 if (su->board[line][i] == 0)
                 {
-                        resetChecker();
-                        return false;
+                        continue;
                 }
                 checker[su->board[line][i] - 1]++;
         }
