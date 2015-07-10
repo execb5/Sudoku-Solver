@@ -33,6 +33,16 @@ copyBoard(Sudoku* su)
 }
 
 bool
+freePos(Sudoku* su, int y, int x)
+{
+        if (su->board[y][x] == 0)
+        {
+                return true;
+        }
+        return false;
+}
+
+bool
 is1stQOk(Sudoku* su)
 {
         int i;
@@ -329,6 +339,46 @@ isLineCorrect(Sudoku* su, int line)
         return false;
 }
 
+bool
+isValid(Sudoku* su, int val, int row, int column)
+{
+        int sectorRow    = (row / 3) * 3;
+        int sectorColumn = (column / 3) * 3;
+        int row1         = (row + 2) % 3;
+        int col1         = (column + 2) % 3;
+        int row2         = (row + 4) % 3;
+        int col2         = (column + 4) % 3;
+        int i;
+        for (i = 0; i < SUDOKU_SIZE; i++)
+        {
+                if (su->board[i][column] == val)
+                {
+                        return false;
+                }
+                if (su->board[row][i] == val)
+                {
+                        return false;
+                }
+        }
+        if(su->board[row1 + sectorRow][col1 + sectorColumn] == val)
+        {
+                return false;
+        }
+        if(su->board[row2 + sectorRow][col1 + sectorColumn] == val)
+        {
+                return false;
+        }
+        if(su->board[row1 + sectorRow][col2 + sectorColumn] == val)
+        {
+                return false;
+        }
+        if(su->board[row2 + sectorRow][col2 + sectorColumn] == val)
+        {
+                return false;
+        }
+        return true;
+}
+
 void
 printBoard(Sudoku* su)
 {
@@ -408,61 +458,68 @@ resetChecker(void)
         }
 }
 
-void
+bool
 solve(Sudoku* su)
 {
-        solveAux(su, 1, 0, 0);
-}
-
-void
-solveAux(Sudoku* su, int val, int y, int x)
-{
-        /*if (val > SUDOKU_SIZE)*/
-        /*{*/
-                /*return;*/
-        /*}*/
-        /*if (y == 9)*/
-        /*{*/
-                /*if (isBoardCorrect(su))*/
-                /*{*/
-                        /*printBoard(su);*/
-                        /*return;*/
-                /*}*/
-                /*return;*/
-        /*}*/
-        /*if (x == 9)*/
-        /*{*/
-                /*x = 0;*/
-                /*y++;*/
-        /*}*/
-        /*Sudoku* copy;*/
-        /*while (val <= SUDOKU_SIZE)*/
-        /*{*/
-                /*copy = copyBoard(su);*/
-                /*if (write(copy, val, y, x))*/
-                /*{*/
-                        /*if (isLineCorrect(copy, y) && isColumnCorrect(copy, x))*/
-                        /*{*/
-                                /*solveAux(copy, ++val, y, ++x);*/
-                        /*}*/
-                        /*else*/
-                        /*{*/
-                                /*val++;*/
-                        /*}*/
-                /*}*/
-                /*else*/
-                /*{*/
-                        /*solveAux(copy, val, y, ++x);*/
-                /*}*/
-        /*}*/
+        return solveAux(su, 0, 0);
 }
 
 bool
-write(Sudoku* su, int val, int y, int x)
+solveAux(Sudoku* su, int row, int column)
 {
-        if (su->board[y][x] == 0)
+        if (row == 9)
         {
-                su->board[y][x] = val;
+                return true;
+        }
+        if (su->board[row][column])
+        {
+                if (column == 8)
+                {
+                        if (solveAux(su, row + 1, 0))
+                        {
+                                return true;
+                        }
+                }
+                else
+                {
+                        if (solveAux(su, row, column + 1))
+                        {
+                                return true;
+                        }
+                }
+        }
+        int nextVal;
+        for (nextVal = 1; nextVal < 10; nextVal++)
+        {
+                if (isValid(su, nextVal, row, column))
+                {
+                        su->board[row][column] = nextVal;
+                        if (column == SUDOKU_SIZE - 1)
+                        {
+                                if (solveAux(su, row + 1, 0))
+                                {
+                                        return true;
+                                }
+                        }
+                        else
+                        {
+                                if (solveAux(su, row, column + 1))
+                                {
+                                        return true;
+                                }
+                        }
+                        su->board[row][column] = 0;
+                }
+        }
+        return false; //Warning of control reches end of non-void function
+}
+
+bool
+write(Sudoku* su, int val, int row, int column)
+{
+        if (su->board[row][column] == 0)
+        {
+                su->board[row][column] = val;
                 return true;
         }
         return false;

@@ -73,6 +73,9 @@ main(int argc, const char* argv[])
         printf("Is test board correct? %d\n", isBoardCorrect(&test));
 
         solve(read);
+        printBoard(read);
+        solve(copy);
+        printBoard(copy);
 
         free(read);
         free(copy);
