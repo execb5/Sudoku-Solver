@@ -411,11 +411,59 @@ resetChecker(void)
 void
 solve(Sudoku* su)
 {
-        solveAux(su, 0, 0);
+        solveAux(su, 1, 0, 0);
 }
 
 void
-solveAux(Sudoku* su, int i, int j)
+solveAux(Sudoku* su, int val, int y, int x)
 {
+        /*if (val > SUDOKU_SIZE)*/
+        /*{*/
+                /*return;*/
+        /*}*/
+        /*if (y == 9)*/
+        /*{*/
+                /*if (isBoardCorrect(su))*/
+                /*{*/
+                        /*printBoard(su);*/
+                        /*return;*/
+                /*}*/
+                /*return;*/
+        /*}*/
+        /*if (x == 9)*/
+        /*{*/
+                /*x = 0;*/
+                /*y++;*/
+        /*}*/
+        /*Sudoku* copy;*/
+        /*while (val <= SUDOKU_SIZE)*/
+        /*{*/
+                /*copy = copyBoard(su);*/
+                /*if (write(copy, val, y, x))*/
+                /*{*/
+                        /*if (isLineCorrect(copy, y) && isColumnCorrect(copy, x))*/
+                        /*{*/
+                                /*solveAux(copy, ++val, y, ++x);*/
+                        /*}*/
+                        /*else*/
+                        /*{*/
+                                /*val++;*/
+                        /*}*/
+                /*}*/
+                /*else*/
+                /*{*/
+                        /*solveAux(copy, val, y, ++x);*/
+                /*}*/
+        /*}*/
+}
 
+bool
+write(Sudoku* su, int val, int y, int x)
+{
+        if (su->board[y][x] == 0)
+        {
+                su->board[y][x] = val;
+                return true;
+        }
+        return false;
 }
