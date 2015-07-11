@@ -5,22 +5,26 @@
 int
 main(int argc, const char* argv[])
 {
-        static const char filename[] = "examples/schema";
-
-        Sudoku* read = readSudokuFromFile(filename);
-
-        Sudoku* hard = readSudokuFromFile("examples/hard");
-
-        printf("Normal puzzle:\n");
-        printBoard(read);
-        solve(read);
-        printBoard(read);
-        printf("Hard puzzle:\n");
-        printBoard(hard);
-        solve(hard);
-        printBoard(hard);
-
-        free(read);
-
+        if (argc > 1)
+        {
+                int i;
+                Sudoku* su;
+                for (i = 1; i < argc; i++)
+                {
+                        printf("%s\n", argv[i]);
+                        su = readSudokuFromFile(argv[i]);
+                        printBoard(su);
+                        solve(su);
+                        printBoard(su);
+                        printf("\n");
+                        printf("-------------------------------------------\n");
+                        printf("-------------------------------------------\n");
+                }
+        }
+        else
+        {
+                printf("USAGE:\n");
+                printf("./main <SUDOKU_FILE> <SUDOKU_FILE>...\n");
+        }
         return 0;
 }
