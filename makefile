@@ -17,11 +17,11 @@ $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
 sudoku: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
-run: main
-	./$^
+examples: sudoku
+	./$^ examples/*
 
-testLeak: main
-	valgrind --leak-check=full -v ./$^
+testLeak: sudoku
+	valgrind --leak-check=full -v ./$^ examples/*
 
 .PHONY: clean
 
