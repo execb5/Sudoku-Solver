@@ -66,7 +66,14 @@ printBoard(Sudoku* su)
         {
                 for (j = 0; j < SUDOKU_SIZE; j++)
                 {
-                        printf("|_%d_", su->board[i][j]);
+                        if (su->board[i][j] == 0)
+                        {
+                                printf("|_ _");
+                        }
+                        else
+                        {
+                                printf("|_%d_", su->board[i][j]);
+                        }
                         if (j == 2 || j == 5)
                         {
                                 printf("|");
