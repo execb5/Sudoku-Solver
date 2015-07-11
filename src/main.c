@@ -16,6 +16,7 @@ main(int argc, const char* argv[])
                         printBoard(su);
                         solve(su);
                         printBoard(su);
+                        free(su);
                         printf("\n");
                         printf("-------------------------------------------\n");
                         printf("-------------------------------------------\n");
