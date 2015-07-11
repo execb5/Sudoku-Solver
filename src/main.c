@@ -31,7 +31,7 @@ main(int argc, const char* argv[])
         else
         {
                 printf("USAGE:\n");
-                printf("./main <SUDOKU_FILE> <SUDOKU_FILE>...\n");
+                printf("./sudoku <SUDOKU_FILE> <SUDOKU_FILE>...\n");
         }
         return 0;
 }
