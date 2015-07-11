@@ -24,4 +24,4 @@ compiling the project.
 4 7 0 0 0 1 0 0 0
 ```
 There are 6 examples available and a base file for helping when writing your own
-sudoku. Example 2 is the hardest available.
+sudoku. Example 2 is the hardest available, taking 19-20s to solve on my machine.
