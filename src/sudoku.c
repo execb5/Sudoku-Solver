@@ -159,6 +159,7 @@ solveAux(Sudoku* su, int row, int column)
                                 return true;
                         }
                 }
+                return false;
         }
         int nextVal;
         for (nextVal = 1; nextVal < 10; nextVal++)
