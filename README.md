@@ -11,7 +11,7 @@ compiling the project.
 #### How to use this project:
 
 1. Use `make` to **compile**.
-2. `./sudoku example` **runs** the program using an example in this format:
+2. `./sudoku example` **runs** the program using an `example` in this format:
 ```
 0 0 0 2 0 0 0 6 3
 3 0 0 0 0 5 4 0 1
