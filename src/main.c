@@ -5,7 +5,7 @@
 int
 main(int argc, const char* argv[])
 {
-        static const char filename[] = "schema";
+        static const char filename[] = "examples/schema";
 
         Sudoku* read = readSudokuFromFile(filename);
 
