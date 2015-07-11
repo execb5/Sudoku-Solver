@@ -14,7 +14,7 @@ OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-main: $(OBJ)
+sudoku: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 run: main
@@ -27,4 +27,4 @@ testLeak: main
 
 clean:
 	rm -f $(ODIR)/*.o
-	rm -f main
+	rm -f sudoku
