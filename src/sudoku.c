@@ -166,7 +166,7 @@ solveAux(Sudoku* su, int row, int column)
                 if (isValid(su, nextVal, row, column))
                 {
                         su->board[row][column] = nextVal;
-                        if (column == SUDOKU_SIZE - 1)
+                        if (column == 8)
                         {
                                 if (solveAux(su, row + 1, 0))
                                 {
