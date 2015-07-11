@@ -10,17 +10,18 @@ compiling the project.
 
 #### How to use this project:
 
-Cloning the repository:
-
-```zsh
-git clone https://execb5@bitbucket.org/execb5/sudoku-solver.git
-cd sudoku-solver/
+1. Use `make` to **compile**.
+2. `./sudoku example` **runs** the program using an example in this format:
 ```
-
-With this you have **3** options:
-
-* `make` - will **compile** the project.
-* `make run` - will compile and **run** the project.
-* `make testLeak` - will compile and run the project using *Valgrind* to
-  **test** for memory leaks.
-
+0 0 0 2 0 0 0 6 3
+3 0 0 0 0 5 4 0 1
+0 0 1 0 0 3 9 8 0
+0 0 0 0 0 0 0 9 0
+0 0 0 5 3 8 0 0 0
+0 3 0 0 0 0 0 0 0
+0 2 6 3 0 0 5 0 0
+5 0 3 7 0 0 0 0 8
+4 7 0 0 0 1 0 0 0
+```
+There are 6 examples available and a base file for helping when writing your own
+sudoku.
