@@ -41,11 +41,11 @@ isValid(Sudoku* su, int val, int row, int column)
         {
                 return false;
         }
-        if(su->board[row2 + sectorRow][col1 + sectorColumn] == val)
+        if(su->board[row1 + sectorRow][col2 + sectorColumn] == val)
         {
                 return false;
         }
-        if(su->board[row1 + sectorRow][col2 + sectorColumn] == val)
+        if(su->board[row2 + sectorRow][col1 + sectorColumn] == val)
         {
                 return false;
         }
