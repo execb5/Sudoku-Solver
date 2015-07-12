@@ -17,6 +17,22 @@ load_msg(GtkWidget *widget, gpointer window)
         printf("Load selected\n");
 }
 
+GdkPixbuf*
+create_pixbuf(const gchar * filename)
+{
+        GdkPixbuf* pixbuf;
+        GError* error = NULL;
+        pixbuf        = gdk_pixbuf_new_from_file(filename, &error);
+
+        if(!pixbuf)
+        {
+                fprintf(stderr, "%s\n", error->message);
+                g_error_free(error);
+        }
+
+        return pixbuf;
+}
+
 int
 main(int argc, char* argv[])
 {
@@ -66,6 +82,7 @@ main(int argc, char* argv[])
                 gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
                 gtk_window_set_default_size(GTK_WINDOW(window), 500, 500);
                 gtk_container_set_border_width(GTK_CONTAINER(window), 15);
+                gtk_window_set_icon(GTK_WINDOW(window), create_pixbuf("img/web.png"));
                 
                 vbox = gtk_vbox_new(FALSE, 0);
                 halign = gtk_alignment_new(0, 0, 0, 0);
