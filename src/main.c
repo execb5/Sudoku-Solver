@@ -75,9 +75,9 @@ main(int argc, char* argv[])
                 
                 fileMenu = gtk_menu_new();
                 fileMi   = gtk_menu_item_new_with_mnemonic("_File");
-                openMi   = gtk_menu_item_new_with_mnemonic("_Open");
+                openMi   = gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN, NULL);
                 sep      = gtk_separator_menu_item_new();
-                quitMi   = gtk_menu_item_new_with_mnemonic("_Quit");
+                quitMi   = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
                 
                 gtk_menu_item_set_submenu(GTK_MENU_ITEM(fileMi), fileMenu);
                 gtk_menu_shell_append(GTK_MENU_SHELL(fileMenu), openMi);
