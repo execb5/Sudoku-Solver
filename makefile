@@ -3,7 +3,7 @@ SDIR = ./src
 ODIR = ./obj
 
 CC = gcc
-CFLAGS = -Wall -g -I$(IDIR) `pkg-config --libs --cflags gtk+-2.0`
+CFLAGS = -Wall -g -I$(IDIR) `pkg-config --libs --cflags gtk+-3.0`
 
 _DEPS = sudoku.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
