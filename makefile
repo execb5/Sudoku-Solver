@@ -29,7 +29,7 @@ examples: sudoku
 	./$^ examples/*
 
 testLeak: sudoku
-	valgrind --leak-check=full -v ./$^ examples/*
+	valgrind --leak-check=full --show-leak-kinds=all -v ./$^ examples/*
 
 .PHONY: clean
 
