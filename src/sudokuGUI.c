@@ -45,7 +45,7 @@ main(int argc, char* argv[])
         /* Get main window pointer from UI */
         window = GTK_WIDGET( gtk_builder_get_object( builder, "window1" ) );
         view = GTK_WIDGET( gtk_builder_get_object( builder, "textview" ) );
-        gtk_window_set_icon(GTK_WINDOW(window), create_pixbuf("img/web.png"));
+        gtk_window_set_icon(GTK_WINDOW(window), create_pixbuf("img/App-Sudoku-icon.png"));
 
         GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
         GtkTextIter end;
