@@ -186,3 +186,29 @@ solveAux(Sudoku* su, int row, int column)
         }
         return false; //Warning of control reches end of non-void function
 }
+
+char*
+sudokuToString(Sudoku* su)
+{
+        int i;
+        int j;
+        char buffer[2];
+        char* str = (char*) malloc(sizeof(char) * 18 * 9);
+        for (i = 0; i < SUDOKU_SIZE; i++)
+        {
+                for (j = 0; j < SUDOKU_SIZE; j++)
+                {
+                        snprintf(buffer, 2, "%d", su->board[i][j]);
+                        strcat(str, buffer);
+                        if (j != SUDOKU_SIZE - 1)
+                        {
+                                strcat(str, "\40");
+                        }
+                }
+                if (i != SUDOKU_SIZE - 1)
+                {
+                        strcat(str, "\n");
+                }
+        }
+        return str;
+}

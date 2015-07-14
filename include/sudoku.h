@@ -13,3 +13,4 @@ void printBoard(Sudoku* su);
 Sudoku* readSudokuFromFile(const char* fileName);
 bool solve(Sudoku* su);
 bool solveAux(Sudoku* su, int row, int column);
+char* sudokuToString(Sudoku* su);
