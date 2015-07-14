@@ -8,13 +8,21 @@ CFLAGS = -Wall -g -I$(IDIR) `pkg-config --libs --cflags gtk+-2.0`
 _DEPS = sudoku.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = sudoku.o main.o
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+_OBJ = sudoku.o main.o sudokuGUI.o
+_CMDOBJ = $(filter-out sudokuGUI.o, $(_OBJ))
+_GUIOBJ = $(filter-out main.o, $(_OBJ))
+CMDOBJ = $(patsubst %,$(ODIR)/%,$(_CMDOBJ))
+GUIOBJ = $(patsubst %,$(ODIR)/%,$(_GUIOBJ))
+
+all: sudoku sudokuGUI
 
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-sudoku: $(OBJ)
+sudoku: $(CMDOBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
+
+sudokuGUI: $(GUIOBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 examples: sudoku
@@ -28,3 +36,4 @@ testLeak: sudoku
 clean:
 	rm -f $(ODIR)/*.o
 	rm -f sudoku
+	rm -f sudokuGUI
