@@ -4,10 +4,10 @@
 #include <sudokuGUI.h>
 #include <gtk/gtk.h>
 
-GtkWidget*  g_window;
-GtkWidget*  g_view;
-GtkWidget*  g_button_solve;
-Sudoku*     g_sudoku;
+GtkWidget* g_window;
+GtkWidget* g_view;
+GtkWidget* g_button_solve;
+Sudoku*    g_sudoku;
 
 GdkPixbuf*
 create_pixbuf(const gchar * filename)
@@ -88,13 +88,10 @@ main(int argc, char* argv[])
         GtkBuilder* builder;
         GError*     error = NULL;
 
-        /* Init GTK+ */
         gtk_init( &argc, &argv );
 
-        /* Create new GtkBuilder object */
         builder = gtk_builder_new();
-        /* Load UI from file. If error occurs, report it and quit application.
-        * Replace "tut.glade" with your saved project. */
+
         if( ! gtk_builder_add_from_file( builder, "GUI/GUI.glade", &error ) )
         {
                 g_warning( "%s", error->message );
@@ -110,7 +107,7 @@ main(int argc, char* argv[])
 
         g_signal_connect(g_button_solve, "clicked", G_CALLBACK(solve_sudoku), NULL);
 
-        //Init
+        //Put something on the textview
         load_file_to_text_view("examples/base");
 
         /* Connect signals */
@@ -119,10 +116,8 @@ main(int argc, char* argv[])
         /* Destroy builder, since we don't need it anymore */
         g_object_unref( G_OBJECT( builder ) );
 
-        /* Show window. All other widgets are automatically shown by GtkBuilder */
         gtk_widget_show( g_window );
 
-        /* Start main loop */
         gtk_main();
 
         return( 0 );
