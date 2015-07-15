@@ -3,6 +3,26 @@
 #include <string.h>
 #include <sudoku.h>
 
+static char*
+stripChars(const char *string, const char *chars)
+{
+        char* newstr = malloc(strlen(string) + 1);
+        int counter = 0;
+
+        while(*string)
+        {
+                if (!strchr(chars, *string))
+                {
+                        newstr[counter] = *string;
+                        counter++;
+                }
+                string++;
+        }
+
+        newstr[counter] = 0;
+        return newstr;
+}
+
 Sudoku*
 copyBoard(Sudoku* su)
 {
@@ -185,6 +205,27 @@ solveAux(Sudoku* su, int row, int column)
                 }
         }
         return false; //Warning of control reches end of non-void function
+}
+
+Sudoku*
+stringToSudoku(char* string)
+{
+        Sudoku* su = (Sudoku*) malloc(sizeof(Sudoku));
+
+        char* new = stripChars(string, "\n\\ ");
+
+        int i;
+        int j;
+        for (i = 0; i < SUDOKU_SIZE; i++)
+        {
+                for (j = 0; j < SUDOKU_SIZE; j++)
+                {
+                        su->board[i][j] = *new - '0';//I love C <3
+                        new++;
+                }
+        }
+
+        return su;
 }
 
 char*
