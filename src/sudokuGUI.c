@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <sudoku.h>
 #include <sudokuGUI.h>
 #include <gtk/gtk.h>
@@ -56,6 +55,22 @@ load_file_to_text_view(const char* filename)
         {
                 perror(filename); //why didn't the file open?
         }
+}
+
+Sudoku*
+make_sudoku_from_text_view(void)
+{
+        GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(g_view));
+        GtkTextIter start;
+        GtkTextIter end;
+        char* text;
+
+        gtk_text_buffer_get_bounds(buffer, &start, &end);
+        text = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
+
+        Sudoku* su = stringToSudoku(text);
+
+        return su;
 }
 
 int
