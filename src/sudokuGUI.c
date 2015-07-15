@@ -7,12 +7,7 @@
 GtkWidget*  g_window;
 GtkWidget*  g_view;
 GtkWidget*  g_button_solve;
-
-static void
-print_hello (GtkWidget *widget, gpointer data)
-{
-        g_print("Hello World\n");
-}
+Sudoku*     g_sudoku;
 
 GdkPixbuf*
 create_pixbuf(const gchar * filename)
@@ -34,9 +29,6 @@ void
 load_file_to_text_view(const char* filename)
 {
         GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(g_view));
-        GtkTextIter end;
-
-        gtk_text_buffer_get_end_iter(buffer, &end);
 
         FILE* file = fopen ( filename, "r" );
         if (file != NULL)
@@ -47,7 +39,7 @@ load_file_to_text_view(const char* filename)
                 char* string = malloc(fsize + 1);
                 fread(string, fsize, 1, file);
                 string[fsize] = 0;
-                gtk_text_buffer_insert(buffer, &end, string, -1);
+                gtk_text_buffer_set_text(buffer, string, -1);
                 fclose(file);
                 free(string);
         }
@@ -55,6 +47,14 @@ load_file_to_text_view(const char* filename)
         {
                 perror(filename); //why didn't the file open?
         }
+}
+
+void
+load_sudoku_to_text_view(Sudoku* su)
+{
+        GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(g_view));
+
+        gtk_text_buffer_set_text(buffer, sudokuToString(su), -1);
 }
 
 Sudoku*
@@ -71,6 +71,15 @@ make_sudoku_from_text_view(void)
         Sudoku* su = stringToSudoku(text);
 
         return su;
+}
+
+void
+solve_sudoku(void)
+{
+        g_sudoku = make_sudoku_from_text_view();
+        solve(g_sudoku);
+        load_sudoku_to_text_view(g_sudoku);
+        free(g_sudoku);
 }
 
 int
@@ -98,8 +107,10 @@ main(int argc, char* argv[])
         g_view = GTK_WIDGET( gtk_builder_get_object( builder, "textview" ) );
         g_button_solve = GTK_WIDGET( gtk_builder_get_object( builder, "buttonSolve" ) );
         gtk_window_set_icon(GTK_WINDOW(g_window), create_pixbuf("img/App-Sudoku-icon.png"));
-        g_signal_connect (g_button_solve, "clicked", G_CALLBACK (print_hello), NULL);
 
+        g_signal_connect(g_button_solve, "clicked", G_CALLBACK(solve_sudoku), NULL);
+
+        //Init
         load_file_to_text_view("examples/base");
 
         /* Connect signals */

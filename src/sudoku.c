@@ -234,7 +234,7 @@ sudokuToString(Sudoku* su)
         int i;
         int j;
         char buffer[2];
-        char* str = (char*) malloc(sizeof(char) * 18 * 9);
+        char* str = (char*) calloc(163, sizeof(char));//(9 elements + 8 whitespaces + 1 newLine)*9rows + NUl
         for (i = 0; i < SUDOKU_SIZE; i++)
         {
                 for (j = 0; j < SUDOKU_SIZE; j++)
