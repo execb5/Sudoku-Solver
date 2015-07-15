@@ -129,7 +129,6 @@ main(int argc, char* argv[])
                 return( 1 );
         }
 
-        /* Get main window pointer from UI */
         g_window = GTK_WIDGET( gtk_builder_get_object( builder, "window1" ) );
         g_view = GTK_WIDGET( gtk_builder_get_object( builder, "textview" ) );
         g_button_solve = GTK_WIDGET( gtk_builder_get_object( builder, "buttonSolve" ) );
