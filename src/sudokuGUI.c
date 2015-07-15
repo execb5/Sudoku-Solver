@@ -7,6 +7,7 @@
 GtkWidget* g_window;
 GtkWidget* g_view;
 GtkWidget* g_button_solve;
+GtkWidget* g_button_open;
 Sudoku*    g_sudoku;
 
 GdkPixbuf*
@@ -74,6 +75,35 @@ make_sudoku_from_text_view(void)
 }
 
 void
+open_sudoku(void)
+{
+        GtkWidget* dialog;
+        GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+        gint res;
+
+        dialog = gtk_file_chooser_dialog_new ("Open File",
+                                              GTK_WINDOW(g_window),
+                                              action,
+                                              "_Cancel",
+                                              GTK_RESPONSE_CANCEL,
+                                              "_Open",
+                                              GTK_RESPONSE_ACCEPT,
+                                              NULL);
+
+        res = gtk_dialog_run(GTK_DIALOG (dialog));
+        if (res == GTK_RESPONSE_ACCEPT)
+        {
+                char* filename;
+                GtkFileChooser* chooser = GTK_FILE_CHOOSER(dialog);
+                filename = gtk_file_chooser_get_filename(chooser);
+                load_file_to_text_view(filename);
+                g_free(filename);
+        }
+
+        gtk_widget_destroy (dialog);
+}
+
+void
 solve_sudoku(void)
 {
         g_sudoku = make_sudoku_from_text_view();
@@ -103,9 +133,11 @@ main(int argc, char* argv[])
         g_window = GTK_WIDGET( gtk_builder_get_object( builder, "window1" ) );
         g_view = GTK_WIDGET( gtk_builder_get_object( builder, "textview" ) );
         g_button_solve = GTK_WIDGET( gtk_builder_get_object( builder, "buttonSolve" ) );
+        g_button_open = GTK_WIDGET( gtk_builder_get_object( builder, "buttonOpen" ) );
         gtk_window_set_icon(GTK_WINDOW(g_window), create_pixbuf("img/App-Sudoku-icon.png"));
 
         g_signal_connect(g_button_solve, "clicked", G_CALLBACK(solve_sudoku), NULL);
+        g_signal_connect(g_button_open, "clicked", G_CALLBACK(open_sudoku), NULL);
 
         //Put something on the textview
         load_file_to_text_view("examples/base");
