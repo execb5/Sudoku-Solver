@@ -5,7 +5,7 @@ ODIR = ./obj
 CC = gcc
 CFLAGS = -Wall -g -I$(IDIR) `pkg-config --libs --cflags gtk+-3.0`
 
-_DEPS = sudoku.h
+_DEPS = sudoku.h sudokuGUI.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 _OBJ = sudoku.o main.o sudokuGUI.o
