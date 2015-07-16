@@ -1,7 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
 #include <sudoku.h>
+
+static void
+cloneBoard(Sudoku* dst, Sudoku* src)
+{
+        int i;
+        int j;
+        for (i = 0; i < SUDOKU_SIZE; i++)
+        {
+                for (j = 0; j < SUDOKU_SIZE; j++)
+                {
+                        dst->board[i][j] = src->board[i][j];
+                }
+        }
+}
 
 static char*
 stripChars(const char *string, const char *chars)
@@ -153,7 +168,62 @@ readSudokuFromFile(const char* fileName)
 bool
 solve(Sudoku* su)
 {
-        return solveAux(su, 0, 0);
+        g_remainingThreadQuit = false;
+        Sudoku* copy1  = copyBoard(su);
+        Sudoku* copy2  = copyBoard(su);
+        Sudoku* solved = NULL;
+
+        struct threadWrapper* st1 = (struct threadWrapper*) malloc(sizeof(struct
+                                threadWrapper));
+        struct threadWrapper* st2 = (struct threadWrapper*) malloc(sizeof(struct
+                                threadWrapper));
+
+        st1->sudoku  = copy1;
+        st1->reverse = false;
+        st1->ans     = &solved;
+        st1->id      = 1;
+
+        st2->sudoku  = copy2;
+        st2->reverse = true;
+        st2->ans     = &solved;
+        st2->id      = 2;
+
+        pthread_t thread1;
+        pthread_t thread2;
+        pthread_attr_t attr;
+
+        pthread_mutex_init(&g_sudoku_mutex, NULL);
+        pthread_cond_init (&g_done, NULL);
+
+        pthread_attr_init(&attr);
+        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+        pthread_create(&thread1, &attr,  threadRoutine, (void*) st1);
+        pthread_create(&thread2, &attr,  threadRoutine, (void*) st2);
+
+        pthread_mutex_lock(&g_sudoku_mutex);
+        fprintf(stderr, "Main: mutex locked\n");
+
+        fprintf(stderr, "Main: wating for signal\n");
+        while (!solved)
+                pthread_cond_wait(&g_done, &g_sudoku_mutex);
+
+        fprintf(stderr, "Main: cloning solved\n");
+        cloneBoard(su, solved);
+        fprintf(stderr, "Main: solved cloned\n");
+        free(solved);
+        fprintf(stderr, "Main: solved freed\n");
+
+        pthread_mutex_unlock(&g_sudoku_mutex);
+        fprintf(stderr, "Main: mutex unlocked\n");
+
+        pthread_join(thread1, NULL);
+        pthread_join(thread2, NULL);
+
+        pthread_attr_destroy(&attr);
+        pthread_mutex_destroy(&g_sudoku_mutex);
+        pthread_cond_destroy(&g_done);
+
+        return true;
 }
 
 bool
@@ -183,6 +253,57 @@ solveAux(Sudoku* su, int row, int column)
         }
         int nextVal;
         for (nextVal = 1; nextVal < 10; nextVal++)
+        {
+                if (isValid(su, nextVal, row, column))
+                {
+                        su->board[row][column] = nextVal;
+                        if (column == 8)
+                        {
+                                if (solveAux(su, row + 1, 0))
+                                {
+                                        return true;
+                                }
+                        }
+                        else
+                        {
+                                if (solveAux(su, row, column + 1))
+                                {
+                                        return true;
+                                }
+                        }
+                        su->board[row][column] = 0;
+                }
+        }
+        return false; //Warning of control reches end of non-void function
+}
+
+bool
+solveAuxReverse(Sudoku* su, int row, int column)
+{
+        if (row == 9)
+        {
+                return true;
+        }
+        if (su->board[row][column])
+        {
+                if (column == 8)
+                {
+                        if (solveAux(su, row + 1, 0))
+                        {
+                                return true;
+                        }
+                }
+                else
+                {
+                        if (solveAux(su, row, column + 1))
+                        {
+                                return true;
+                        }
+                }
+                return false;
+        }
+        int nextVal;
+        for (nextVal = 9; nextVal > 0; nextVal--)
         {
                 if (isValid(su, nextVal, row, column))
                 {
@@ -252,4 +373,48 @@ sudokuToString(Sudoku* su)
                 }
         }
         return str;
+}
+
+void*
+threadRoutine(void* args)
+{
+        struct threadWrapper* arguments = (struct threadWrapper*) args;
+
+        if (arguments->reverse)
+        {
+                solveAuxReverse(arguments->sudoku, 0, 0);
+        }
+        else
+        {
+                solveAux(arguments->sudoku, 0, 0);
+        }
+        fprintf(stderr, "Thread %d: sudoku solved\n", arguments->id);
+
+        fprintf(stderr, "Thread %d: mutex locked\n", arguments->id);
+        pthread_mutex_lock(&g_sudoku_mutex);
+
+        fprintf(stderr, "Thread %d: check if late\n", arguments->id);
+        if (!g_remainingThreadQuit)
+        {
+                fprintf(stderr, "Thread %d: asking remaining thread to quit\n", arguments->id);
+                g_remainingThreadQuit = true;
+                fprintf(stderr, "Thread %d: Copying solution to solved\n", arguments->id);
+                Sudoku* solved = copyBoard(arguments->sudoku);
+                fprintf(stderr, "Thread %d: passing solved pointer to Main\n", arguments->id);
+                *(arguments->ans) = solved;
+                fprintf(stderr, "Thread %d: sending done signal\n", arguments->id);
+                pthread_cond_signal(&g_done);
+        }
+        else
+        {
+                fprintf(stderr, "Thread %d: Late, bye\n", arguments->id);
+        }
+
+        fprintf(stderr, "Thread %d: Unlocked mutex\n", arguments->id);
+        pthread_mutex_unlock(&g_sudoku_mutex);
+
+        free(arguments->sudoku);
+        free(arguments);
+
+        pthread_exit(NULL);
 }

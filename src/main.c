@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <pthread.h>
 #include <sudoku.h>
-#include <gtk/gtk.h>
 
 int
 main(int argc, char* argv[])
@@ -34,5 +34,6 @@ main(int argc, char* argv[])
                 printf("COMMAND LINE USAGE:\n");
                 printf("./sudoku <SUDOKU_FILE> <SUDOKU_FILE>...\n");
         }
-        return 0;
+
+        pthread_exit(NULL);
 }
