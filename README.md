@@ -36,7 +36,7 @@ explanatory.
 
 `make sudoku` will compile only the terminal version.
 
-After compiling the project, all you have to do is to run `./sudoku` in the
+After compiling the project, all you have to do is run `./sudoku` in the
 terminal, which will not work because you have to pass a sudoku file as
 parameter. The file should be in this format:
 
