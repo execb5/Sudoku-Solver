@@ -229,8 +229,19 @@ solve(Sudoku* su)
 }
 
 bool
-solveAux(Sudoku* su, int row, int column)
+solveAux(Sudoku* su, int row, int column, struct threadWrapper* ta)
 {
+        fprintf(stderr, "Thread %d: check if late\n", ta->id);
+        if (g_remainingThreadQuit)
+        {
+                fprintf(stderr, "Thread %d: Late, bye\n", ta->id);
+                
+                free(ta->sudoku);
+                free(ta);
+                
+                pthread_exit(NULL);
+        }
+
         if (row == 9)
         {
                 return true;
@@ -239,14 +250,14 @@ solveAux(Sudoku* su, int row, int column)
         {
                 if (column == 8)
                 {
-                        if (solveAux(su, row + 1, 0))
+                        if (solveAux(su, row + 1, 0, ta))
                         {
                                 return true;
                         }
                 }
                 else
                 {
-                        if (solveAux(su, row, column + 1))
+                        if (solveAux(su, row, column + 1, ta))
                         {
                                 return true;
                         }
@@ -261,14 +272,14 @@ solveAux(Sudoku* su, int row, int column)
                         su->board[row][column] = nextVal;
                         if (column == 8)
                         {
-                                if (solveAux(su, row + 1, 0))
+                                if (solveAux(su, row + 1, 0, ta))
                                 {
                                         return true;
                                 }
                         }
                         else
                         {
-                                if (solveAux(su, row, column + 1))
+                                if (solveAux(su, row, column + 1, ta))
                                 {
                                         return true;
                                 }
@@ -280,8 +291,19 @@ solveAux(Sudoku* su, int row, int column)
 }
 
 bool
-solveAuxReverse(Sudoku* su, int row, int column)
+solveAuxReverse(Sudoku* su, int row, int column, struct threadWrapper* ta)
 {
+        fprintf(stderr, "Thread %d: check if late\n", ta->id);
+        if (g_remainingThreadQuit)
+        {
+                fprintf(stderr, "Thread %d: Late, bye\n", ta->id);
+                
+                free(ta->sudoku);
+                free(ta);
+                
+                pthread_exit(NULL);
+        }
+
         if (row == 9)
         {
                 return true;
@@ -290,14 +312,14 @@ solveAuxReverse(Sudoku* su, int row, int column)
         {
                 if (column == 8)
                 {
-                        if (solveAux(su, row + 1, 0))
+                        if (solveAuxReverse(su, row + 1, 0, ta))
                         {
                                 return true;
                         }
                 }
                 else
                 {
-                        if (solveAux(su, row, column + 1))
+                        if (solveAuxReverse(su, row, column + 1, ta))
                         {
                                 return true;
                         }
@@ -312,14 +334,14 @@ solveAuxReverse(Sudoku* su, int row, int column)
                         su->board[row][column] = nextVal;
                         if (column == 8)
                         {
-                                if (solveAux(su, row + 1, 0))
+                                if (solveAuxReverse(su, row + 1, 0, ta))
                                 {
                                         return true;
                                 }
                         }
                         else
                         {
-                                if (solveAux(su, row, column + 1))
+                                if (solveAuxReverse(su, row, column + 1, ta))
                                 {
                                         return true;
                                 }
@@ -384,11 +406,11 @@ threadRoutine(void* args)
 
         if (arguments->reverse)
         {
-                solveAuxReverse(arguments->sudoku, 0, 0);
+                solveAuxReverse(arguments->sudoku, 0, 0, arguments);
         }
         else
         {
-                solveAux(arguments->sudoku, 0, 0);
+                solveAux(arguments->sudoku, 0, 0, arguments);
         }
         fprintf(stderr, "Thread %d: sudoku solved\n", arguments->id);
 
