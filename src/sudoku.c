@@ -201,22 +201,16 @@ solve(Sudoku* su)
         pthread_create(&thread2, &attr,  threadRoutine, (void*) st2);
 
         pthread_mutex_lock(&g_sudoku_mutex);
-        fprintf(stderr, "Main: mutex locked\n");
 
-        fprintf(stderr, "Main: wating for signal\n");
         while (!solved)
         {
                 pthread_cond_wait(&g_done, &g_sudoku_mutex);
         }
 
-        fprintf(stderr, "Main: cloning solved\n");
         cloneBoard(su, solved);
-        fprintf(stderr, "Main: solved cloned\n");
         free(solved);
-        fprintf(stderr, "Main: solved freed\n");
 
         pthread_mutex_unlock(&g_sudoku_mutex);
-        fprintf(stderr, "Main: mutex unlocked\n");
 
         pthread_join(thread1, NULL);
         pthread_join(thread2, NULL);
@@ -231,11 +225,8 @@ solve(Sudoku* su)
 bool
 solveAux(Sudoku* su, int row, int column, struct threadWrapper* ta)
 {
-        fprintf(stderr, "Thread %d: check if late\n", ta->id);
         if (g_remainingThreadQuit)
         {
-                fprintf(stderr, "Thread %d: Late, bye\n", ta->id);
-                
                 free(ta->sudoku);
                 free(ta);
                 
@@ -293,11 +284,8 @@ solveAux(Sudoku* su, int row, int column, struct threadWrapper* ta)
 bool
 solveAuxReverse(Sudoku* su, int row, int column, struct threadWrapper* ta)
 {
-        fprintf(stderr, "Thread %d: check if late\n", ta->id);
         if (g_remainingThreadQuit)
         {
-                fprintf(stderr, "Thread %d: Late, bye\n", ta->id);
-                
                 free(ta->sudoku);
                 free(ta);
                 
@@ -412,29 +400,17 @@ threadRoutine(void* args)
         {
                 solveAux(arguments->sudoku, 0, 0, arguments);
         }
-        fprintf(stderr, "Thread %d: sudoku solved\n", arguments->id);
 
-        fprintf(stderr, "Thread %d: mutex locked\n", arguments->id);
         pthread_mutex_lock(&g_sudoku_mutex);
 
-        fprintf(stderr, "Thread %d: check if late\n", arguments->id);
         if (!g_remainingThreadQuit)
         {
-                fprintf(stderr, "Thread %d: asking remaining thread to quit\n", arguments->id);
                 g_remainingThreadQuit = true;
-                fprintf(stderr, "Thread %d: Copying solution to solved\n", arguments->id);
                 Sudoku* solved = copyBoard(arguments->sudoku);
-                fprintf(stderr, "Thread %d: passing solved pointer to Main\n", arguments->id);
                 *(arguments->ans) = solved;
-                fprintf(stderr, "Thread %d: sending done signal\n", arguments->id);
                 pthread_cond_signal(&g_done);
         }
-        else
-        {
-                fprintf(stderr, "Thread %d: Late, bye\n", arguments->id);
-        }
 
-        fprintf(stderr, "Thread %d: Unlocked mutex\n", arguments->id);
         pthread_mutex_unlock(&g_sudoku_mutex);
 
         free(arguments->sudoku);
