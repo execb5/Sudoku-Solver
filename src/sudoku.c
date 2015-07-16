@@ -205,7 +205,9 @@ solve(Sudoku* su)
 
         fprintf(stderr, "Main: wating for signal\n");
         while (!solved)
+        {
                 pthread_cond_wait(&g_done, &g_sudoku_mutex);
+        }
 
         fprintf(stderr, "Main: cloning solved\n");
         cloneBoard(su, solved);
