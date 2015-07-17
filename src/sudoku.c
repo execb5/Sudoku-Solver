@@ -255,8 +255,11 @@ solveAux(Sudoku* su, int row, int column, struct threadWrapper* ta)
                 }
                 return false;
         }
-        int nextVal;
-        for (nextVal = 1; nextVal < 10; nextVal++)
+
+        int nextVal = !ta->reverse ?  1 : 9;
+        int until   = !ta->reverse ? 10 : 0;
+
+        while (nextVal != until)
         {
                 if (isValid(su, nextVal, row, column))
                 {
@@ -277,65 +280,7 @@ solveAux(Sudoku* su, int row, int column, struct threadWrapper* ta)
                         }
                         su->board[row][column] = 0;
                 }
-        }
-        return false; //Warning of control reches end of non-void function
-}
-
-bool
-solveAuxReverse(Sudoku* su, int row, int column, struct threadWrapper* ta)
-{
-        if (g_remainingThreadQuit)
-        {
-                free(ta->sudoku);
-                free(ta);
-                
-                pthread_exit(NULL);
-        }
-
-        if (row == 9)
-        {
-                return true;
-        }
-        if (su->board[row][column])
-        {
-                if (column == 8)
-                {
-                        if (solveAuxReverse(su, row + 1, 0, ta))
-                        {
-                                return true;
-                        }
-                }
-                else
-                {
-                        if (solveAuxReverse(su, row, column + 1, ta))
-                        {
-                                return true;
-                        }
-                }
-                return false;
-        }
-        int nextVal;
-        for (nextVal = 9; nextVal > 0; nextVal--)
-        {
-                if (isValid(su, nextVal, row, column))
-                {
-                        su->board[row][column] = nextVal;
-                        if (column == 8)
-                        {
-                                if (solveAuxReverse(su, row + 1, 0, ta))
-                                {
-                                        return true;
-                                }
-                        }
-                        else
-                        {
-                                if (solveAuxReverse(su, row, column + 1, ta))
-                                {
-                                        return true;
-                                }
-                        }
-                        su->board[row][column] = 0;
-                }
+                nextVal = !ta->reverse ? nextVal + 1 : nextVal - 1;
         }
         return false; //Warning of control reches end of non-void function
 }
@@ -392,14 +337,7 @@ threadRoutine(void* args)
 {
         struct threadWrapper* arguments = (struct threadWrapper*) args;
 
-        if (arguments->reverse)
-        {
-                solveAuxReverse(arguments->sudoku, 0, 0, arguments);
-        }
-        else
-        {
-                solveAux(arguments->sudoku, 0, 0, arguments);
-        }
+        solveAux(arguments->sudoku, 0, 0, arguments);
 
         pthread_mutex_lock(&g_sudoku_mutex);
 
