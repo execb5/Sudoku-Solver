@@ -18,12 +18,24 @@ cloneBoard(Sudoku* dst, Sudoku* src)
         }
 }
 
+static void
+testPointer(void* ptr)
+{
+        if (ptr == NULL)
+        {
+                fprintf(stderr, "Failed to allocate memory\n");
+                exit(EXIT_FAILURE);
+        }
+}
+
 static char*
 stripChars(const char *string, const char *chars)
 {
         char* newstr = malloc(strlen(string) + 1);
-        int counter = 0;
 
+        testPointer(newstr);
+
+        int counter = 0;
         while(*string)
         {
                 if (!strchr(chars, *string))
@@ -42,11 +54,7 @@ Sudoku*
 copyBoard(Sudoku* su)
 {
         Sudoku* cp = (Sudoku*) malloc(sizeof(Sudoku));
-        if (cp == NULL)
-        {
-                printf("Failed to allocate memory for a copy.\n");
-                exit(EXIT_FAILURE);
-        }
+        testPointer(cp);
         memcpy(cp->board, su->board, SUDOKU_SIZE * SUDOKU_SIZE * sizeof(int));
         return cp;
 }
@@ -126,11 +134,8 @@ Sudoku*
 readSudokuFromFile(const char* fileName)
 {
         Sudoku* read = (Sudoku*) malloc(sizeof(Sudoku));
-        if (read == NULL)
-        {
-                printf("Failed to allocate memory before reading a File.\n");
-                exit(EXIT_FAILURE);
-        }
+
+        testPointer(read);
 
         FILE* file = fopen ( fileName, "r" );
         if (file != NULL)
@@ -177,6 +182,9 @@ solve(Sudoku* su)
                                 threadWrapper));
         struct threadWrapper* st2 = (struct threadWrapper*) malloc(sizeof(struct
                                 threadWrapper));
+
+        testPointer(st1);
+        testPointer(st2);
 
         st1->sudoku  = copy1;
         st1->reverse = false;
@@ -290,6 +298,8 @@ stringToSudoku(char* string)
 {
         Sudoku* su = (Sudoku*) malloc(sizeof(Sudoku));
 
+        testPointer(su);
+
         char* new = stripChars(string, "\n\\ ");
 
         int i;
@@ -313,6 +323,7 @@ sudokuToString(Sudoku* su)
         int j;
         char buffer[2];
         char* str = (char*) calloc(163, sizeof(char));//(9 elements + 8 whitespaces + 1 newLine)*9rows + NUL
+        testPointer(str);
         for (i = 0; i < SUDOKU_SIZE; i++)
         {
                 for (j = 0; j < SUDOKU_SIZE; j++)
