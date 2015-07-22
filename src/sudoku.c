@@ -170,6 +170,44 @@ readSudokuFromFile(const char* fileName)
         return read;
 }
 
+Sudoku*
+readSudokuFromStdin(void)
+{
+        Sudoku* read = (Sudoku*) malloc(sizeof(Sudoku));
+
+        testPointer(read);
+
+        char line[LINE_SIZE];
+        int i = 0;
+        int j = 0;
+        while (fgets(line, sizeof line, stdin) != NULL) //read a line
+        {
+                size_t ln = strlen(line) - 1;
+                if (line[ln] == '\n')
+                {
+                        line[ln] = '\0'; //removes the trailing newline
+                }
+                
+                char* ch = strtok(line, "\\  ");
+                j = 0;
+                while (ch != NULL)
+                {
+                        read->board[i][j] = strtol(ch, NULL, 10);
+                        ch = strtok( NULL, "\\ " );
+                        j++;
+                }
+                i++;
+        }
+        if (ferror(stdin))
+        {
+                free(read);
+                perror("Error reading from stdin.");
+                exit(EXIT_FAILURE);
+        }
+
+        return read;
+}
+
 bool
 solve(Sudoku* su)
 {

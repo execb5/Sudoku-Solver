@@ -22,6 +22,7 @@ Sudoku* copyBoard(Sudoku* su);
 bool    isValid(Sudoku* su, int val, int row, int column);
 void    printBoard(Sudoku* su);
 Sudoku* readSudokuFromFile(const char* fileName);
+Sudoku* readSudokuFromStdin(void);
 bool    solve(Sudoku* su);
 bool    solveAux(Sudoku* su, int row, int column, struct threadWrapper* ta);
 Sudoku* stringToSudoku(char* string);
