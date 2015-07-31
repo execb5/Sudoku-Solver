@@ -13,75 +13,75 @@ Sudoku*    g_sudoku;
 GdkPixbuf*
 create_pixbuf(const gchar * filename)
 {
-        GdkPixbuf* pixbuf;
-        GError* error = NULL;
-        pixbuf        = gdk_pixbuf_new_from_file(filename, &error);
+	GdkPixbuf* pixbuf;
+	GError* error = NULL;
+	pixbuf        = gdk_pixbuf_new_from_file(filename, &error);
 
-        if(!pixbuf)
-        {
-                fprintf(stderr, "%s\n", error->message);
-                g_error_free(error);
-        }
+	if(!pixbuf)
+	{
+		fprintf(stderr, "%s\n", error->message);
+		g_error_free(error);
+	}
 
-        return pixbuf;
+	return pixbuf;
 }
 
 void
 load_file_to_text_view(const char* filename)
 {
-        GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(g_view));
+	GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(g_view));
 
-        FILE* file = fopen ( filename, "r" );
-        if (file != NULL)
-        {
-                fseek(file, 0, SEEK_END);
-                long fsize = ftell(file);
-                fseek(file, 0, SEEK_SET);
-                char* string = malloc(fsize + 1);
-                fread(string, fsize, 1, file);
-                string[fsize] = 0;
-                gtk_text_buffer_set_text(buffer, string, -1);
-                fclose(file);
-                free(string);
-        }
-        else
-        {
-                perror(filename); //why didn't the file open?
-        }
+	FILE* file = fopen ( filename, "r" );
+	if (file != NULL)
+	{
+		fseek(file, 0, SEEK_END);
+		long fsize = ftell(file);
+		fseek(file, 0, SEEK_SET);
+		char* string = malloc(fsize + 1);
+		fread(string, fsize, 1, file);
+		string[fsize] = 0;
+		gtk_text_buffer_set_text(buffer, string, -1);
+		fclose(file);
+		free(string);
+	}
+	else
+	{
+		perror(filename); //why didn't the file open?
+	}
 }
 
 void
 load_sudoku_to_text_view(Sudoku* su)
 {
-        GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(g_view));
+	GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(g_view));
 
-        gtk_text_buffer_set_text(buffer, sudokuToString(su), -1);
+	gtk_text_buffer_set_text(buffer, sudokuToString(su), -1);
 }
 
 Sudoku*
 make_sudoku_from_text_view(void)
 {
-        GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(g_view));
-        GtkTextIter start;
-        GtkTextIter end;
-        char* text;
+	GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(g_view));
+	GtkTextIter start;
+	GtkTextIter end;
+	char* text;
 
-        gtk_text_buffer_get_bounds(buffer, &start, &end);
-        text = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
+	gtk_text_buffer_get_bounds(buffer, &start, &end);
+	text = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
 
-        Sudoku* su = stringToSudoku(text);
+	Sudoku* su = stringToSudoku(text);
 
-        return su;
+	return su;
 }
 
 void
 open_sudoku(void)
 {
-        GtkWidget* dialog;
-        GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-        gint res;
+	GtkWidget* dialog;
+	GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+	gint res;
 
-        dialog = gtk_file_chooser_dialog_new ("Open File",
+	dialog = gtk_file_chooser_dialog_new ("Open File",
                                               GTK_WINDOW(g_window),
                                               action,
                                               "_Cancel",
@@ -90,66 +90,66 @@ open_sudoku(void)
                                               GTK_RESPONSE_ACCEPT,
                                               NULL);
 
-        res = gtk_dialog_run(GTK_DIALOG (dialog));
-        if (res == GTK_RESPONSE_ACCEPT)
-        {
-                char* filename;
-                GtkFileChooser* chooser = GTK_FILE_CHOOSER(dialog);
-                filename = gtk_file_chooser_get_filename(chooser);
-                load_file_to_text_view(filename);
-                g_free(filename);
-        }
+	res = gtk_dialog_run(GTK_DIALOG (dialog));
+	if (res == GTK_RESPONSE_ACCEPT)
+	{
+		char* filename;
+		GtkFileChooser* chooser = GTK_FILE_CHOOSER(dialog);
+		filename = gtk_file_chooser_get_filename(chooser);
+		load_file_to_text_view(filename);
+		g_free(filename);
+	}
 
-        gtk_widget_destroy (dialog);
+	gtk_widget_destroy (dialog);
 }
 
 void
 solve_sudoku(void)
 {
-        g_sudoku = make_sudoku_from_text_view();
-        solve(g_sudoku);
-        load_sudoku_to_text_view(g_sudoku);
-        free(g_sudoku);
+	g_sudoku = make_sudoku_from_text_view();
+	solve(g_sudoku);
+	load_sudoku_to_text_view(g_sudoku);
+	free(g_sudoku);
 }
 
 int
 main(int argc, char* argv[])
 {
-        GtkBuilder* builder;
-        GError*     error = NULL;
+	GtkBuilder* builder;
+	GError*     error = NULL;
 
-        gtk_init( &argc, &argv );
+	gtk_init( &argc, &argv );
 
-        builder = gtk_builder_new();
+	builder = gtk_builder_new();
 
-        if( ! gtk_builder_add_from_file( builder, "GUI/GUI.glade", &error ) )
-        {
-                g_warning( "%s", error->message );
-                g_free( error );
-                return( 1 );
-        }
+	if( ! gtk_builder_add_from_file( builder, "GUI/GUI.glade", &error ) )
+	{
+		g_warning( "%s", error->message );
+		g_free( error );
+		return( 1 );
+	}
 
-        g_window = GTK_WIDGET( gtk_builder_get_object( builder, "window1" ) );
-        g_view = GTK_WIDGET( gtk_builder_get_object( builder, "textview" ) );
-        g_button_solve = GTK_WIDGET( gtk_builder_get_object( builder, "buttonSolve" ) );
-        g_button_open = GTK_WIDGET( gtk_builder_get_object( builder, "buttonOpen" ) );
-        gtk_window_set_icon(GTK_WINDOW(g_window), create_pixbuf("img/App-Sudoku-icon.png"));
+	g_window = GTK_WIDGET( gtk_builder_get_object( builder, "window1" ) );
+	g_view = GTK_WIDGET( gtk_builder_get_object( builder, "textview" ) );
+	g_button_solve = GTK_WIDGET( gtk_builder_get_object( builder, "buttonSolve" ) );
+	g_button_open = GTK_WIDGET( gtk_builder_get_object( builder, "buttonOpen" ) );
+	gtk_window_set_icon(GTK_WINDOW(g_window), create_pixbuf("img/App-Sudoku-icon.png"));
 
-        g_signal_connect(g_button_solve, "clicked", G_CALLBACK(solve_sudoku), NULL);
-        g_signal_connect(g_button_open, "clicked", G_CALLBACK(open_sudoku), NULL);
+	g_signal_connect(g_button_solve, "clicked", G_CALLBACK(solve_sudoku), NULL);
+	g_signal_connect(g_button_open, "clicked", G_CALLBACK(open_sudoku), NULL);
 
-        //Put something on the textview
-        load_file_to_text_view("examples/base");
+	//Put something on the textview
+	load_file_to_text_view("examples/base");
 
-        /* Connect signals */
-        gtk_builder_connect_signals( builder, NULL );
+	/* Connect signals */
+	gtk_builder_connect_signals( builder, NULL );
 
-        /* Destroy builder, since we don't need it anymore */
-        g_object_unref( G_OBJECT( builder ) );
+	/* Destroy builder, since we don't need it anymore */
+	g_object_unref( G_OBJECT( builder ) );
 
-        gtk_widget_show( g_window );
+	gtk_widget_show( g_window );
 
-        gtk_main();
+	gtk_main();
 
-        return( 0 );
+	return( 0 );
 }

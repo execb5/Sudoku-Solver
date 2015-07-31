@@ -4,14 +4,14 @@
 typedef enum {false, true} bool;
 
 typedef struct {
-        int board[SUDOKU_SIZE][SUDOKU_SIZE];
+	int board[SUDOKU_SIZE][SUDOKU_SIZE];
 } Sudoku;
 
 struct threadWrapper {
-        Sudoku*  sudoku;
-        bool     reverse;
-        Sudoku** ans;
-        int      id;
+	Sudoku*  sudoku;
+	bool     reverse;
+	Sudoku** ans;
+	int      id;
 };
 
 pthread_mutex_t g_sudoku_mutex;
