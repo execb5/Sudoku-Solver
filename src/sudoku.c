@@ -53,7 +53,7 @@ stripChars(const char *string, const char *chars)
 Sudoku*
 copyBoard(Sudoku* su)
 {
-	Sudoku* cp = (Sudoku*) malloc(sizeof(Sudoku));
+	Sudoku* cp = malloc(sizeof(Sudoku));
 	testPointer(cp);
 
 	memcpy(cp->board, su->board, SUDOKU_SIZE * SUDOKU_SIZE * sizeof(int));
@@ -142,7 +142,7 @@ printBoard(Sudoku* su)
 Sudoku*
 readSudokuFromFile(const char* fileName)
 {
-	Sudoku* read = (Sudoku*) malloc(sizeof(Sudoku));
+	Sudoku* read = malloc(sizeof(Sudoku));
 
 	testPointer(read);
 
@@ -184,7 +184,7 @@ readSudokuFromFile(const char* fileName)
 Sudoku*
 readSudokuFromStdin(void)
 {
-	Sudoku* read = (Sudoku*) malloc(sizeof(Sudoku));
+	Sudoku* read = malloc(sizeof(Sudoku));
 
 	testPointer(read);
 
@@ -228,10 +228,8 @@ solve(Sudoku* su)
 	Sudoku* copy2  = copyBoard(su);
 	Sudoku* solved = NULL;
 
-	struct threadWrapper* st1 = (struct threadWrapper*) malloc(sizeof(struct
-				threadWrapper));
-	struct threadWrapper* st2 = (struct threadWrapper*) malloc(sizeof(struct
-				threadWrapper));
+	struct threadWrapper* st1 = malloc(sizeof(struct threadWrapper));
+	struct threadWrapper* st2 = malloc(sizeof(struct threadWrapper));
 
 	testPointer(st1);
 	testPointer(st2);
@@ -351,7 +349,7 @@ solveAux(Sudoku* su, int row, int column, struct threadWrapper* ta)
 Sudoku*
 stringToSudoku(char* string)
 {
-	Sudoku* su = (Sudoku*) malloc(sizeof(Sudoku));
+	Sudoku* su = malloc(sizeof(Sudoku));
 
 	testPointer(su);
 
