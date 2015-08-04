@@ -374,7 +374,7 @@ sudokuToString(Sudoku* su)
 {
 	char buffer[2];
 
-	char* str = (char*) calloc(163, sizeof(char));//(9 elements + 8 whitespaces + 1 newLine)*9rows + NUL
+	char* str = calloc(163, sizeof(char));//(9 elements + 8 whitespaces + 1 newLine)*9rows + NUL
 	testPointer(str);
 
 	int i;
