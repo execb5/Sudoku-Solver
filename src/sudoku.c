@@ -343,7 +343,7 @@ solveAux(Sudoku* su, int row, int column, struct threadWrapper* ta)
 		nextVal = !ta->reverse ? nextVal + 1 : nextVal - 1;
 	}
 
-	return false; //Warning of control reches end of non-void function
+	return false; //Warning of control reaches end of non-void function
 }
 
 Sudoku*
