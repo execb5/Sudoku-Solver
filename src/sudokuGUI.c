@@ -82,13 +82,13 @@ open_sudoku(void)
 	gint res;
 
 	dialog = gtk_file_chooser_dialog_new ("Open File",
-                                              GTK_WINDOW(g_window),
-                                              action,
-                                              "_Cancel",
-                                              GTK_RESPONSE_CANCEL,
-                                              "_Open",
-                                              GTK_RESPONSE_ACCEPT,
-                                              NULL);
+	                                      GTK_WINDOW(g_window),
+	                                      action,
+	                                      "_Cancel",
+	                                      GTK_RESPONSE_CANCEL,
+	                                      "_Open",
+	                                      GTK_RESPONSE_ACCEPT,
+	                                      NULL);
 
 	res = gtk_dialog_run(GTK_DIALOG (dialog));
 	if (res == GTK_RESPONSE_ACCEPT)
