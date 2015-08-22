@@ -25,15 +25,16 @@ sudoku: $(CMDOBJ)
 sudokuGUI: $(GUIOBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
-examples: sudoku
-	./$^ examples/*
 
-testLeak: sudoku
-	valgrind --leak-check=full --show-leak-kinds=all -v ./$^ examples/*
-
-.PHONY: clean
+.PHONY: clean examples testLeak
 
 clean:
 	rm -f $(ODIR)/*.o
 	rm -f sudoku
 	rm -f sudokuGUI
+
+examples: sudoku
+	./$^ examples/*
+
+testLeak: sudoku
+	valgrind --leak-check=full --show-leak-kinds=all -v ./$^ examples/*
