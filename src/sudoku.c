@@ -285,7 +285,7 @@ solveAux(Sudoku* su, int row, int column, struct threadWrapper* ta)
 	{
 		free(ta->sudoku);
 		free(ta);
-		
+
 		pthread_exit(NULL);
 	}
 
