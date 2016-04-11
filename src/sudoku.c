@@ -29,7 +29,7 @@ testPointer(void* ptr)
 }
 
 static char*
-stripChars(const char *string, const char *chars)
+stripChars(const char* string, const char* chars)
 {
 	char* newstr = malloc(strlen(string) + 1);
 
