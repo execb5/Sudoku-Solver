@@ -2,9 +2,8 @@
 
 This is a Sudoku Solver written in **C**.
 
-I made this ~~to conquer the **world**!~~ because I wanted to train myself more
-in the use of **C**. One of the objectives here, is to get **no** warnings when
-compiling the project.
+I made this because I wanted to learn **C**. One of the objectives here,
+was to get **no** warnings when compiling the project.
 
 ---
 
